@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="CULCommandProvider">
+   <implementation class="de.tobiaswegner.communication.cul4java.osgi.CULCommandProvider"/>
+   <service>
+      <provide interface="org.eclipse.osgi.framework.console.CommandProvider"/>
+   </service>
+   <reference bind="bindCULInterface" cardinality="1..1" interface="de.tobiaswegner.communication.cul4java.CULInterface" name="CULInterface" policy="static"/>
+</scr:component>
