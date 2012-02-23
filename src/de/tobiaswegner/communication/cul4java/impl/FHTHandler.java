@@ -1,12 +1,14 @@
 package de.tobiaswegner.communication.cul4java.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import de.tobiaswegner.communication.cul4java.FHTListener;
-import de.tobiaswegner.communication.cul4java.FS20Listener;
 
 public class FHTHandler {
+	HashMap<String, Integer> valueCache = new HashMap<>();
+	
 	ArrayList<FHTListener> listeners = new ArrayList<>();
 	
 	public void registerListener (FHTListener listener) {
@@ -25,22 +27,49 @@ public class FHTHandler {
 		{
 			System.out.println("Received FHT frame: " + line);
 			
-			if (line.length() == 11)
+			if (line.length() >= 13)
 			{
 				//is FHT8v frame
-				String houseCode = line.substring(1, 5); // dev
+				String device = line.substring(1, 5); // dev
 				String command = line.substring(5, 7); // cde
+				int cde = Integer.parseInt(command, 16);
 				String origin = line.substring(7, 9); // ??
 				String argument = line.substring(9, 11); // val
 				
-				//$dmsg = sprintf("81%02x04xx0909a001%s00%s", $len/2+7, substr($dmsg,1,6), substr($dmsg,7));
-				String cmd = FHTConstants.getIDByCode(Integer.parseInt(command, 16));
+				String cmd = FHTConstants.getIDByCode(cde);
 				
-				if (!cmd.equals("unknown"))
-					System.out.print("FHT " + houseCode + ": " + cmd + "=" + argument + "\r\n");
-				
+				if (!cmd.equals("unknown")) {
+					switch (cde) {
+					case FHTConstants.FHT_DESIRED_TEMP:
+						System.out.println("FHT " + device + ": desired temp = " + ((double)Integer.parseInt(argument, 16)) / 2.0);
+
+						break;
+					case FHTConstants.FHT_MEASURED_TEMP_LOW:
+						valueCache.put(device + "lowtemp", new Integer(Integer.parseInt(argument, 16)));
+						
+						break;
+					case FHTConstants.FHT_MEASURED_TEMP_HIGH:
+						Integer lowtemp = valueCache.get(device + "lowtemp");
+						
+						if (lowtemp != null) {
+							double temperature = (double)lowtemp + ((double)Integer.parseInt(argument, 16)) * 256.0;
+							
+							temperature /= 10.0;
+							
+							for (FHTListener fhtListener : listeners) {
+								fhtListener.FHT80bReceivedTemperature(device, temperature);
+							}
+						
+							System.out.println("FHT " + device + ": measured temp = " + temperature);
+						}
+
+						break;
+					default:
+						System.out.print("FHT " + device + ": " + cmd + "=" + argument + "\r\n");
+					}
+				}
 			}
-			else if (line.length() == 9)
+			else if (line.length() == 11)
 			{
 				//is FHT80b frame
 				String device = line.substring(1, 7);
@@ -84,5 +113,17 @@ public class FHTHandler {
 			
 			System.out.println("line: " + line);								
 		}	
+	}
+	
+	public String SetDesiredTemperature (String device, double temperature) {
+		if ((temperature >= 5.5) && (temperature <= 30.5)) {
+			int temp = (int) (temperature * 2.0);
+			
+			String command = "T" +  device + "41" + Integer.toHexString(temp) + "\r\n";
+			
+			return command.toUpperCase();
+		}
+		
+		return "";
 	}
 }

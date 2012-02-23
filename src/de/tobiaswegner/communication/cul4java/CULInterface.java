@@ -13,6 +13,9 @@ public interface CULInterface {
 	
 	public void FS20_Send (String HouseCode, String Address, String Command);
 	public void FHT_Send ();
+	public void FHT_SetDesiredTemperature (String device, double temperature);
 	
 	public void Decode(String cmdLine);
+
+	public void RAW_Send (String sendString);
 }

@@ -28,7 +28,19 @@ public class CULCommandProvider implements CommandProvider {
 	}
 	
 	public void _cul(CommandInterpreter ci) {
-		culInterface.Decode(ci.nextArgument());
+		String cmd = ci.nextArgument();
+		
+		String arg = ci.nextArgument();
+		
+		if (arg == null) {
+			culInterface.Decode(cmd);
+			
+			return;
+		}
+		
+		if (cmd.equals("send")) {
+			culInterface.RAW_Send(arg + "\r\n");
+		}
 	}
 
 	public void _fs20(CommandInterpreter ci) {
@@ -50,6 +62,20 @@ public class CULCommandProvider implements CommandProvider {
 		
 		if (cmd.equals("help")) {
 			ci.println("fs20 send <housecode> <address> <command> - You have to specify housecode, adress and command");
+		}
+	}
+
+	public void _fht(CommandInterpreter ci) {
+		String cmd = ci.nextArgument();
+		
+		if (cmd.equals("set_temp")) {
+			String device = ci.nextArgument();
+			
+			String temp = ci.nextArgument();
+			
+			double t = Double.parseDouble(temp);
+			
+			culInterface.FHT_SetDesiredTemperature(device, t);
 		}
 	}
 	

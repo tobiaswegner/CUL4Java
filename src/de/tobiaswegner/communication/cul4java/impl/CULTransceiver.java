@@ -112,6 +112,14 @@ public class CULTransceiver implements CULInterface, Runnable {
 	}	
 
 	@Override
+	public void FHT_SetDesiredTemperature (String device, double temperature) {
+		String sendString = fhtHandler.SetDesiredTemperature(device, temperature);
+		
+		if (sendString.length() > 0)
+			RAW_Send (sendString);		
+	}
+
+	@Override
 	public void Decode(String line) {
 		if (line.startsWith("F"))
 		{
@@ -131,6 +139,7 @@ public class CULTransceiver implements CULInterface, Runnable {
 		}		
 	}
 
+	@Override
 	public void RAW_Send (String sendString) {
 		synchronized (bw) {
 			try {
