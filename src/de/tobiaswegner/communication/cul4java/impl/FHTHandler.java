@@ -37,7 +37,7 @@ public class FHTHandler {
 				String cmd = FHTConstants.getIDByCode(Byte.parseByte(command, 16));
 				
 				if (!cmd.equals("unknown"))
-					System.out.print("FHT " + houseCode + ": " + cmd + "=" + argument);
+					System.out.print("FHT " + houseCode + ": " + cmd + "=" + argument + "\r\n");
 				
 			}
 			else if (line.length() == 9)
