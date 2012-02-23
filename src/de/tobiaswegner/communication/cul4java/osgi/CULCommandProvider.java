@@ -26,6 +26,10 @@ public class CULCommandProvider implements CommandProvider {
 		return "---CUL commands---\r\n" + 
 				"\tfs20 help - help on fs20 command\r\n";
 	}
+	
+	public void _cul(CommandInterpreter ci) {
+		culInterface.Decode(ci.nextArgument());
+	}
 
 	public void _fs20(CommandInterpreter ci) {
 		String cmd = ci.nextArgument();

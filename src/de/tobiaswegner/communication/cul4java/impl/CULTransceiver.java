@@ -54,7 +54,7 @@ public class CULTransceiver implements CULInterface, Runnable {
 		br = new BufferedReader(new InputStreamReader(is));
 		bw = new BufferedWriter(new OutputStreamWriter(os));
 
-		RAW_Send ("X43\n");
+		RAW_Send ("X21\n");
 
 		readThread = new Thread(this);
 		readThread.setName("[FS20] - Receiver Thread");
@@ -110,7 +110,27 @@ public class CULTransceiver implements CULInterface, Runnable {
 		// TODO Auto-generated method stub
 
 	}	
-	
+
+	@Override
+	public void Decode(String line) {
+		if (line.startsWith("F"))
+		{
+			//is FS20 frame
+			fs20Handler.ParseFS20 (line);
+		}
+		else if (line.startsWith("T")) {
+			//is FHT frames
+			fhtHandler.ParseFHT(line);
+		} 
+		else if (line.equals("LOVF")) {
+			// no send time available anymore
+			System.out.println("No fs20 send time available");
+		}
+		else {
+			System.out.println("CUL received: " + line);
+		}		
+	}
+
 	public void RAW_Send (String sendString) {
 		synchronized (bw) {
 			try {
@@ -160,22 +180,7 @@ public class CULTransceiver implements CULInterface, Runnable {
 						
 						System.out.println ("CUL received: " + line);
 						
-						if (line.startsWith("F"))
-						{
-							//is FS20 frame
-							fs20Handler.ParseFS20 (line);
-						}
-						else if (line.startsWith("T")) {
-							//is FHT frames
-							fhtHandler.ParseFHT(line);
-						} 
-						else if (line.equals("LOVF")) {
-							// no send time available anymore
-							System.out.println("No fs20 send time available");
-						}
-						else {
-							System.out.println("CUL received: " + line);
-						}
+						Decode(line);
 					}
 					else
 						Thread.sleep(100);
