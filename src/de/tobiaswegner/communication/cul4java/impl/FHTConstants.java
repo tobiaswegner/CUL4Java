@@ -3,7 +3,7 @@ package de.tobiaswegner.communication.cul4java.impl;
 public class FHTConstants {
 	public static final int FHT_ACTUATOR_1	= 0x00;
 	
-	public static String getIDByCode(byte code) {
+	public static String getIDByCode(int code) {
 		if (code == 0x00)
 			return "actuator0";
 		if (code == 0x01)

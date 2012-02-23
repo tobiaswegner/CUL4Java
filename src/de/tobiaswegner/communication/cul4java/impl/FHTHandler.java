@@ -34,7 +34,7 @@ public class FHTHandler {
 				String argument = line.substring(9, 11); // val
 				
 				//$dmsg = sprintf("81%02x04xx0909a001%s00%s", $len/2+7, substr($dmsg,1,6), substr($dmsg,7));
-				String cmd = FHTConstants.getIDByCode(Byte.parseByte(command, 16));
+				String cmd = FHTConstants.getIDByCode(Integer.parseInt(command, 16));
 				
 				if (!cmd.equals("unknown"))
 					System.out.print("FHT " + houseCode + ": " + cmd + "=" + argument + "\r\n");
