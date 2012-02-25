@@ -57,7 +57,7 @@ public class FHTHandler {
 							temperature /= 10.0;
 							
 							for (FHTListener fhtListener : listeners) {
-								fhtListener.FHT80bReceivedTemperature(device, temperature);
+								fhtListener.FHT80bReceivedValue(device, "currentTemperature", temperature);
 							}
 						
 							System.out.println("FHT " + device + ": measured temp = " + temperature);

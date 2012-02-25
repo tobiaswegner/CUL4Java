@@ -18,4 +18,5 @@ Bundle-NativeCode:
  processor=x86
 Bundle-ClassPath: lib/RXTXcomm.x64.jar,
  .
+Export-Package: de.tobiaswegner.communication.cul4java
  
