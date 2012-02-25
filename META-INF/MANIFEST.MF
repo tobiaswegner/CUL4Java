@@ -9,5 +9,13 @@ Import-Package: org.eclipse.osgi.framework.console;version="1.1.0";resolution:=o
  org.osgi.framework;version="1.6.0",
  org.osgi.service.component;version="1.1.0"
 Service-Component: OSGI-INF/CULCommandProvider.xml, OSGI-INF/CULInterface.xml
+Bundle-NativeCode: 
+ lib/x64/rxtxSerial.dll; lib/x64/rxtxParallel.dll; 
+ osname=Win32;
+ processor=x86-64,
+ lib/win32/rxtxSerial.dll; lib/win32/rxtxSParallel.dll; 
+ osname=Win32;
+ processor=x86
 Bundle-ClassPath: lib/RXTXcomm.x64.jar,
  .
+ 
