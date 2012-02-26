@@ -63,6 +63,7 @@ public class CULTransceiver implements CULInterface, Runnable {
 
 	@Override
 	public void Close() {
+		RAW_Send ("X00\n");
 		active = false;
 
 		try {
