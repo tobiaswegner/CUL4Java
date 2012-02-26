@@ -41,7 +41,13 @@ public class FHTHandler {
 				if (!cmd.equals("unknown")) {
 					switch (cde) {
 					case FHTConstants.FHT_DESIRED_TEMP:
-						System.out.println("FHT " + device + ": desired temp = " + ((double)Integer.parseInt(argument, 16)) / 2.0);
+						double desiredTemperature = ((double)Integer.parseInt(argument, 16)) / 2.0;
+						
+						for (FHTListener fhtListener : listeners) {
+							fhtListener.FHT80bReceivedValue(device, "desiredTemperature", desiredTemperature);
+						}
+
+						System.out.println("FHT " + device + ": desired temp = " + desiredTemperature);
 
 						break;
 					case FHTConstants.FHT_MEASURED_TEMP_LOW:
@@ -61,6 +67,22 @@ public class FHTHandler {
 							}
 						
 							System.out.println("FHT " + device + ": measured temp = " + temperature);
+						}
+
+						break;
+					case FHTConstants.FHT_ACTUATOR_0:
+					case FHTConstants.FHT_ACTUATOR_1:
+					case FHTConstants.FHT_ACTUATOR_2:
+					case FHTConstants.FHT_ACTUATOR_3:
+					case FHTConstants.FHT_ACTUATOR_4:
+					case FHTConstants.FHT_ACTUATOR_5:
+					case FHTConstants.FHT_ACTUATOR_6:
+					case FHTConstants.FHT_ACTUATOR_7:
+					case FHTConstants.FHT_ACTUATOR_8:
+						double valve = ((double)Integer.parseInt(argument, 16)) / 255.0;
+						
+						for (FHTListener fhtListener : listeners) {
+							fhtListener.FHT80bReceivedValue(device, FHTConstants.getIDByCode(cde), valve);
 						}
 
 						break;
