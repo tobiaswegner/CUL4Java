@@ -7,9 +7,9 @@ import java.util.Iterator;
 import de.tobiaswegner.communication.cul4java.FHTListener;
 
 public class FHTHandler {
-	HashMap<String, Integer> valueCache = new HashMap<>();
+	HashMap<String, Integer> valueCache = new HashMap<String, Integer>();
 	
-	ArrayList<FHTListener> listeners = new ArrayList<>();
+	ArrayList<FHTListener> listeners = new ArrayList<FHTListener>();
 	
 	public void registerListener (FHTListener listener) {
 		if (!listeners.contains(listener))

@@ -6,7 +6,7 @@ import java.util.Iterator;
 import de.tobiaswegner.communication.cul4java.FS20Listener;
 
 public class FS20Handler {
-	ArrayList<FS20Listener> listeners = new ArrayList<>();
+	ArrayList<FS20Listener> listeners = new ArrayList<FS20Listener>();
 	
 	public void registerListener (FS20Listener listener) {
 		if (!listeners.contains(listener))
