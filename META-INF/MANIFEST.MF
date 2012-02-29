@@ -15,7 +15,8 @@ Bundle-NativeCode:
  processor=x86-64,
  lib/win32/rxtxSerial.dll; lib/win32/rxtxSParallel.dll; 
  osname=Win32;
- processor=x86
+ processor=x86,
+ *
 Bundle-ClassPath: lib/RXTXcomm.x64.jar,
  .
 Export-Package: de.tobiaswegner.communication.cul4java

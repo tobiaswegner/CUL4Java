@@ -22,7 +22,7 @@ public class CUL4OSGi {
 	protected CULInterface culInterface = new CULTransceiver();
 	protected ServiceRegistration<CULInterface> culServiceRegistration = null;
 
-	protected CommPort commPort = null;
+	protected Object commPort = null;
 	
 	protected void activate(ComponentContext context) {
 		this.context = context;
@@ -38,7 +38,6 @@ public class CUL4OSGi {
 	
 				InputStream in = null;
 				OutputStream out = null;
-				SerialPort serialPort = null;
 	
 				if (portName.startsWith("/dev/")) {
 					File portFile = new File(portName);
@@ -46,20 +45,21 @@ public class CUL4OSGi {
 					out = new FileOutputStream(portFile);
 				} else {
 					try {
-					CommPortIdentifier portIdentifier = CommPortIdentifier
-							.getPortIdentifier(portName);
-	
-					commPort = portIdentifier.open("CUL4OSGi", 2000);
-	
-					if (commPort instanceof SerialPort) {
-						serialPort = (SerialPort) commPort;
-						serialPort.setInputBufferSize(10240);
-						serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8,
-								SerialPort.STOPBITS_1, SerialPort.PARITY_EVEN);
-	
-						in = serialPort.getInputStream();
-						out = serialPort.getOutputStream();
-					}}
+						CommPortIdentifier portIdentifier = CommPortIdentifier
+								.getPortIdentifier(portName);
+		
+						commPort = portIdentifier.open("CUL4OSGi", 2000);
+		
+						if (commPort instanceof SerialPort) {
+							SerialPort serialPort = (SerialPort) commPort;
+							serialPort.setInputBufferSize(10240);
+							serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8,
+									SerialPort.STOPBITS_1, SerialPort.PARITY_EVEN);
+		
+							in = serialPort.getInputStream();
+							out = serialPort.getOutputStream();
+						}
+					}
 					catch (NoClassDefFoundError ncdfe) {
 						
 					}
